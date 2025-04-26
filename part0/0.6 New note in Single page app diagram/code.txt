@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: Clicking "Save" triggers the onsubmit event, which:
+    Note right of browser: a. adds a new note to the list of notes
+    Note right of browser: b. clears the input field
+    Note right of browser: c. re-renders the list of notes
+    Note right of browser: d. sends the POST request below
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
