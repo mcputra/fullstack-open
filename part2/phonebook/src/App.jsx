@@ -39,7 +39,7 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
+      id: String(persons.length + 1),
     };
 
     personService.create(personObject).then((response) => {
@@ -47,6 +47,18 @@ const App = () => {
       setNewName("");
       setNewNumber("");
     });
+  };
+
+  const handleDelete = (id) => {
+    if (
+      window.confirm(
+        `Delete ${persons.find((person) => person.id === id).name}?`
+      )
+    ) {
+      personService.remove(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
   };
 
   return (
@@ -60,7 +72,7 @@ const App = () => {
         onNumberChange={handleNumberChange}
         onSubmit={handleSubmit}
       />
-      <Persons persons={persons} search={search} />
+      <Persons persons={persons} search={search} onDelete={handleDelete} />
     </div>
   );
 };

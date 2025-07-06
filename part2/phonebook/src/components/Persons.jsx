@@ -1,6 +1,6 @@
 import Person from "./Person";
 
-const Persons = ({ persons, search }) => {
+const Persons = ({ persons, search, onDelete }) => {
   return (
     <>
       <h2>Numbers</h2>
@@ -9,7 +9,7 @@ const Persons = ({ persons, search }) => {
           person.name.toLowerCase().includes(search.toLowerCase())
         )
         .map((person) => (
-          <Person key={person.id} person={person} />
+          <Person key={person.id} person={person} onDelete={onDelete} />
         ))}
     </>
   );
