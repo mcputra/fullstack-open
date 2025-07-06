@@ -20,11 +20,24 @@ const Content = ({ parts }) => {
   );
 };
 
+const Total = ({ parts }) => {
+  return (
+    <p>
+      total of{" "}
+      {parts.reduce((total, part) => {
+        return total + part.exercises;
+      }, 0)}{" "}
+      exercises
+    </p>
+  );
+};
+
 const Course = ({ course }) => {
   return (
     <>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </>
   );
 };
