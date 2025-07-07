@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
+import Notification from "./components/Notification";
 import Persons from "./components/Persons";
 import personService from "./services/persons";
 
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     personService.getAll().then((response) => {
@@ -48,6 +50,11 @@ const App = () => {
               person.id === id ? returnedPerson : person
             )
           );
+
+          setMessage("Number updated");
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         });
       }
     } else {
@@ -59,6 +66,12 @@ const App = () => {
 
       personService.create(personObject).then((response) => {
         setPersons(persons.concat(response));
+
+        setMessage("Person added");
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+
         setNewName("");
         setNewNumber("");
       });
@@ -80,6 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter search={search} onFilterChange={handleFilterChange} />
       <Form
         newName={newName}
