@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
+  const [type, setType] = useState("");
 
   useEffect(() => {
     personService.getAll().then((response) => {
@@ -44,18 +45,29 @@ const App = () => {
         const person = persons.find((person) => person.id === id);
         const changedPerson = { ...person, number: newNumber };
 
-        personService.update(id, changedPerson).then((returnedPerson) => {
-          setPersons(
-            persons.map((person) =>
-              person.id === id ? returnedPerson : person
-            )
-          );
+        personService
+          .update(id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id === id ? returnedPerson : person
+              )
+            );
 
-          setMessage("Number updated");
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
-        });
+            setType("success");
+            setMessage("Number updated");
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+          })
+          .catch(() => {
+            setPersons(persons.filter((person) => person.id !== id));
+
+            setType("error");
+            setMessage(
+              `Information of ${person.name} has already been removed from server`
+            );
+          });
       }
     } else {
       const personObject = {
@@ -67,6 +79,7 @@ const App = () => {
       personService.create(personObject).then((response) => {
         setPersons(persons.concat(response));
 
+        setType("success");
         setMessage("Person added");
         setTimeout(() => {
           setMessage(null);
@@ -93,7 +106,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} type={type} />
       <Filter search={search} onFilterChange={handleFilterChange} />
       <Form
         newName={newName}
