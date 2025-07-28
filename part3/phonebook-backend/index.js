@@ -37,11 +37,13 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-  const currentTime = new Date();
-  response.send(`
-    <p>Phonebook has info for ${persons.length} people</p>
-    <p>${currentTime}</p>
+  Person.find({}).then((persons) => {
+    const currentTime = new Date();
+    response.send(`
+      <p>Phonebook has info for ${persons.length} people</p>
+      <p>${currentTime}</p>
     `);
+  });
 });
 
 app.get("/api/persons/:id", (request, response, next) => {
