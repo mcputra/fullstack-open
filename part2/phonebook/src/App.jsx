@@ -41,7 +41,6 @@ const App = () => {
         )
       ) {
         const id = persons.find((person) => person.name === newName).id;
-
         const person = persons.find((person) => person.id === id);
         const changedPerson = { ...person, number: newNumber };
 
@@ -73,7 +72,6 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: String(persons.length + 1),
       };
 
       personService.create(personObject).then((response) => {
