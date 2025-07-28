@@ -59,13 +59,18 @@ const App = () => {
               setMessage(null);
             }, 5000);
           })
-          .catch(() => {
-            setPersons(persons.filter((person) => person.id !== id));
+          .catch((error) => {
+            if (error.response.status === 404) {
+              setPersons(persons.filter((person) => person.id !== id));
 
-            setType("error");
-            setMessage(
-              `Information of ${person.name} has already been removed from server`
-            );
+              setType("error");
+              setMessage(
+                `Information of ${person.name} has already been removed from server`
+              );
+            } else {
+              setType("error");
+              setMessage(error.response.data.error);
+            }
           });
       }
     } else {
